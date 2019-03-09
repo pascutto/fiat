@@ -16,8 +16,8 @@ let of_cstruct cs =
   | 0x04, 65 ->
       let f_x = Fe.create () in
       let f_y = Fe.create () in
-      let buf_x = Cstruct_util.rev @@ Cstruct.sub cs 1 32 in
-      let buf_y = Cstruct_util.rev @@ Cstruct.sub cs 33 32 in
+      let buf_x = Cstruct.rev @@ Cstruct.sub cs 1 32 in
+      let buf_y = Cstruct.rev @@ Cstruct.sub cs 33 32 in
       Fe.from_bytes f_x buf_x;
       Fe.to_montgomery f_x;
       Fe.from_bytes f_y buf_y;
@@ -66,12 +66,12 @@ let to_cstruct p =
   | Some (x, y) ->
     let four = Cstruct.create 1 in
     Cstruct.set_uint8 four 0 4 ;
-    let rev_x = Cstruct_util.rev x
-    and rev_y = Cstruct_util.rev y
+    let rev_x = Cstruct.rev x
+    and rev_y = Cstruct.rev y
     in
     Cstruct.concat [ four ; rev_x ; rev_y ]
 
-let pp fmt p = Cstruct_util.pp_hex_le fmt (Cstruct_util.rev (to_cstruct p))
+let pp fmt p = Cstruct_util.pp_hex_le fmt (Cstruct.rev (to_cstruct p))
 
 let double (ctx : Context.t) p =
   let x_out = Fe.create () in
@@ -317,4 +317,4 @@ let x p =
   | None ->
       Cstruct.create 1
   | Some (x, _) ->
-      Cstruct_util.rev x
+      Cstruct.rev x
